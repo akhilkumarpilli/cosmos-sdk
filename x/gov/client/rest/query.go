@@ -385,6 +385,7 @@ func queryVotesOnProposalHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 		if !(propStatus == types.StatusVotingPeriod || propStatus == types.StatusDepositPeriod) {
 			fmt.Println("Inside...Not....")
 			res, err = gcutils.QueryVotesByTxQuery(cliCtx, params)
+			fmt.Printf("Inside...Not....Res..%v..\n....Error: %v", res, err)
 		} else {
 			fmt.Println("Inside with data....")
 			res, _, err = cliCtx.QueryWithData("custom/gov/votes", bz)

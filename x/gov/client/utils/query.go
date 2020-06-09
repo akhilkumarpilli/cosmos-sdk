@@ -119,6 +119,7 @@ func QueryVotesByTxQuery(cliCtx context.CLIContext, params types.QueryProposalVo
 	if cliCtx.Indent {
 		return cliCtx.Codec.MarshalJSONIndent(votes, "", "  ")
 	}
+	fmt.Printf("Votes...%v", votes)
 	return cliCtx.Codec.MarshalJSON(votes)
 }
 
