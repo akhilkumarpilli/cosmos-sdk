@@ -377,12 +377,16 @@ func queryVotesOnProposalHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
+		fmt.Printf("In proposal.........%v", proposal)
+
 		// For inactive proposals we must query the txs directly to get the votes
 		// as they're no longer in state.
 		propStatus := proposal.Status
 		if !(propStatus == types.StatusVotingPeriod || propStatus == types.StatusDepositPeriod) {
+			fmt.Println("Inside...Not....")
 			res, err = gcutils.QueryVotesByTxQuery(cliCtx, params)
 		} else {
+			fmt.Println("Inside with data....")
 			res, _, err = cliCtx.QueryWithData("custom/gov/votes", bz)
 		}
 
@@ -390,6 +394,8 @@ func queryVotesOnProposalHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
 			return
 		}
+
+		fmt.Printf("Out......%v", res)
 
 		rest.PostProcessResponse(w, cliCtx, res)
 	}
