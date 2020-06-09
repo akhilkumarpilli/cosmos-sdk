@@ -77,6 +77,7 @@ func QueryDepositsByTxQuery(cliCtx context.CLIContext, params types.QueryProposa
 // will fetch and build votes directly from the returned txs and return a JSON
 // marshalled result or any error that occurred.
 func QueryVotesByTxQuery(cliCtx context.CLIContext, params types.QueryProposalVotesParams) ([]byte, error) {
+	fmt.Printf("Params....%v", params)
 	var (
 		events = []string{
 			fmt.Sprintf("%s.%s='%s'", sdk.EventTypeMessage, sdk.AttributeKeyAction, types.TypeMsgVote),
@@ -89,6 +90,7 @@ func QueryVotesByTxQuery(cliCtx context.CLIContext, params types.QueryProposalVo
 	// query interrupted either if we collected enough votes or tx indexer run out of relevant txs
 	for len(votes) < totalLimit {
 		searchResult, err := utils.QueryTxsByEvents(cliCtx, events, nextTxPage, defaultLimit)
+		fmt.Printf("Search Result...%v\n Error search: %v\n", searchResult, err)
 		if err != nil {
 			return nil, err
 		}
@@ -103,6 +105,7 @@ func QueryVotesByTxQuery(cliCtx context.CLIContext, params types.QueryProposalVo
 						ProposalID: params.ProposalID,
 						Option:     voteMsg.Option,
 					})
+					fmt.Printf("Votes..For...%v", votes)
 				}
 			}
 		}
@@ -111,6 +114,7 @@ func QueryVotesByTxQuery(cliCtx context.CLIContext, params types.QueryProposalVo
 		}
 	}
 	start, end := client.Paginate(len(votes), params.Page, params.Limit, 100)
+	fmt.Printf("Start:%d \n End:%d", start, end)
 	if start < 0 || end < 0 {
 		votes = []types.Vote{}
 	} else {
