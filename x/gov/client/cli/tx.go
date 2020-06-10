@@ -224,9 +224,9 @@ $ %s tx gov vote 1 yes --from mykey
 				return err
 			}
 
-			if byteVoteOption == types.OptionEmpty {
-				return fmt.Errorf("'%s' is not a valid vote option", args[1])
-			}
+			// if byteVoteOption == types.OptionEmpty {
+			// 	return fmt.Errorf("'%s' is not a valid vote option", args[1])
+			// }
 
 			// Build vote message and run basic validation
 			msg := types.NewMsgVote(from, proposalID, byteVoteOption)
