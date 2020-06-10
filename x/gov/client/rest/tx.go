@@ -117,6 +117,11 @@ func voteHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
+		if voteOption == types.OptionEmpty {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, fmt.Sprintf("'%s' is not a valid vote option", req.Option))
+			return
+		}
+
 		// create the message
 		msg := types.NewMsgVote(req.Voter, proposalID, voteOption)
 		if err := msg.ValidateBasic(); err != nil {
