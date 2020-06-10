@@ -1,6 +1,8 @@
 package keeper
 
 import (
+	"fmt"
+
 	abci "github.com/tendermint/tendermint/abci/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -114,12 +116,15 @@ func queryDeposit(ctx sdk.Context, path []string, req abci.RequestQuery, keeper 
 func queryVote(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
 	var params types.QueryVoteParams
 	err := keeper.cdc.UnmarshalJSON(req.Data, &params)
+	fmt.Printf("Par Keeper...%v\n Err...querier:%v\n", params, err)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONUnmarshal, err.Error())
 	}
 
 	vote, _ := keeper.GetVote(ctx, params.ProposalID, params.Voter)
+	fmt.Printf("Vote Querier...%v\n", vote)
 	bz, err := codec.MarshalJSONIndent(keeper.cdc, vote)
+	fmt.Printf("Bz...%v\nErr bz...%v\n", bz, err)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}

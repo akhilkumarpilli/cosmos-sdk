@@ -300,6 +300,7 @@ func queryVoteHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 
 		var vote types.Vote
 		if err := cliCtx.Codec.UnmarshalJSON(res, &vote); err != nil {
+			fmt.Printf("Err Unmarshal...%v\n", err)
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
