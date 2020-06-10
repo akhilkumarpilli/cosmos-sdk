@@ -129,6 +129,7 @@ func QueryVotesByTxQuery(cliCtx context.CLIContext, params types.QueryProposalVo
 
 // QueryVoteByTxQuery will query for a single vote via a direct txs tags query.
 func QueryVoteByTxQuery(cliCtx context.CLIContext, params types.QueryVoteParams) ([]byte, error) {
+	fmt.Printf("Params Inside:%v\n", params)
 	events := []string{
 		fmt.Sprintf("%s.%s='%s'", sdk.EventTypeMessage, sdk.AttributeKeyAction, types.TypeMsgVote),
 		fmt.Sprintf("%s.%s='%s'", types.EventTypeProposalVote, types.AttributeKeyProposalID, []byte(fmt.Sprintf("%d", params.ProposalID))),

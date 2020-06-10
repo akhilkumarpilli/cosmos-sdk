@@ -283,6 +283,8 @@ func queryVoteHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 
 		params := types.NewQueryVoteParams(proposalID, voterAddr)
 
+		fmt.Printf("Params....%v\n", params)
+
 		bz, err := cliCtx.Codec.MarshalJSON(params)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -290,6 +292,7 @@ func queryVoteHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 		}
 
 		res, _, err := cliCtx.QueryWithData("custom/gov/vote", bz)
+		fmt.Printf("Res...%v\nErr:%v\n", res, err)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
 			return
@@ -301,10 +304,12 @@ func queryVoteHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 			return
 		}
 
+		fmt.Printf("Vote Done...%v", vote)
 		// For an empty vote, either the proposal does not exist or is inactive in
 		// which case the vote would be removed from state and should be queried for
 		// directly via a txs query.
 		if vote.Empty() {
+			fmt.Println("In Empty....")
 			bz, err := cliCtx.Codec.MarshalJSON(types.NewQueryProposalParams(proposalID))
 			if err != nil {
 				rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
@@ -319,6 +324,7 @@ func queryVoteHandlerFn(cliCtx context.CLIContext) http.HandlerFunc {
 			}
 
 			res, err = gcutils.QueryVoteByTxQuery(cliCtx, params)
+			fmt.Printf("Res Inside...%v\nErr:%v\n", res, err)
 			if err != nil {
 				rest.WriteErrorResponse(w, http.StatusInternalServerError, err.Error())
 				return
