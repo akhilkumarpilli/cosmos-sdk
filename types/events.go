@@ -74,8 +74,6 @@ func (em *EventManager) EmitTypedEvent(event proto.Message) error {
 }
 
 func ParseTypedEvent(event abci.Event) (proto.Message, error) {
-	// look up proto.Message type by event.Type
-	// populate attributes into map[string]json.RawMessage and marshal that to a json string
 	// unmarshal the json string to the proto.Message
 	concreteGoType := proto.MessageType(event.Type)
 	if concreteGoType == nil {
@@ -112,7 +110,6 @@ func ParseTypedEvent(event abci.Event) (proto.Message, error) {
 	return protoMsg, nil
 }
 
-// ----------------------------------------------------------------------------
 // Events
 // ----------------------------------------------------------------------------
 
